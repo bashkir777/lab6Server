@@ -11,9 +11,9 @@ import java.io.IOException;
 import java.util.PriorityQueue;
 
 public class CommandProcessing {
-    public static String startProcessing(PriorityQueue<Ticket> queue, byte[] buf){
+    public static String startProcessing(PriorityQueue<Ticket> queue, byte[] buf, FileInteraction fileInteraction) throws WrongTicketData, IOException {
         Commands cmd = Commands.deSerializeCommand(buf);
-        Command command = FindCommand.makeServerCommand(cmd, queue);
+        Command command = FindCommand.makeServerCommand(cmd, queue, fileInteraction);
         return command.execute();
     }
 

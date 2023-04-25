@@ -2,6 +2,8 @@ package ServerCommands;
 
 import Exceptions.ScriptNotFound;
 import Exceptions.WrongTicketData;
+
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -12,5 +14,5 @@ public interface Command {
     /**
      * Метод запускающий выполнение команды
      */
-    public String execute();
+    public String execute() throws WrongTicketData, IOException;
 }

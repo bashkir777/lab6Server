@@ -19,6 +19,9 @@ public class RemoveFirst implements Command {
      */
     @Override
     public String execute(){
+        if(queue.peek() == null){
+            return "невозможно удалить объект, коллекция пустая";
+        }
         queue.poll();
         return "Объект удален";
     }

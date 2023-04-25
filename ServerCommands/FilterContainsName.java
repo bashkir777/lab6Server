@@ -14,7 +14,7 @@ public class FilterContainsName implements Command {
     private String name;
 
     public FilterContainsName(PriorityQueue<Ticket> queue, String name) {
-        this.queue = new PriorityQueue<Ticket>(queue);
+        this.queue = new PriorityQueue<>(queue);
         this.name = name;
     }
 

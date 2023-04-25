@@ -22,6 +22,9 @@ public class RemoveHead implements Command {
     @Override
     public String execute(){
         StringBuilder sb = new StringBuilder();
+        if(queue.peek()==null){
+            return "невозможно удалить элемент, коллекция пустая";
+        }
         sb.append("Удаляемый объект: ").append(queue.poll()).append("\n").append("Объект удален");
         return sb.toString();
     }

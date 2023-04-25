@@ -1,5 +1,6 @@
 package CommandsManagement;
 
+import CollectionInteraction.FileInteraction;
 import Exceptions.NoSuchCommand;
 import Exceptions.WrongScript;
 import Exceptions.WrongTicketData;
@@ -17,7 +18,7 @@ import java.util.Scanner;
 
 public class FindCommand {
 
-    public static Command makeServerCommand(Commands cmd, PriorityQueue<Ticket> queue){
+    public static Command makeServerCommand(Commands cmd, PriorityQueue<Ticket> queue, FileInteraction fileInteraction){
         return switch (cmd.getType()) {
             case ADD -> new Add((Ticket) cmd.getAttr()[0], queue);
             case ADD_IF_MAX -> new AddIfMax((Ticket) cmd.getAttr()[0], queue);
@@ -30,18 +31,19 @@ public class FindCommand {
             case REMOVE_BY_ID -> new RemoveById(queue, Long.parseLong((String) cmd.getAttr()[0]));
             case REMOVE_FIRST -> new RemoveFirst(queue);
             case REMOVE_HEAD -> new RemoveHead(queue);
-            case EXECUTE_SCRIPT -> new ExecuteScript(queue, (String) cmd.getAttr()[0]);
+            case EXECUTE_SCRIPT -> new ExecuteScript(queue, (String) cmd.getAttr()[0], fileInteraction);
             case UPDATE_ID -> new UpdateId(queue, Long.parseLong((String) cmd.getAttr()[0]), (Ticket)cmd.getAttr()[1]);
-            case SHOW -> new Show(queue);
-            default -> null;
+            case SHOW -> new Show(fileInteraction);
+            case EXIT -> new Exit(fileInteraction, queue);
         };
     }
 
-    public static ArrayList<Commands> findCommands(String pathToFile) throws WrongScript, WrongTicketData, FileNotFoundException {
-        Scanner scanner = new Scanner(new File(pathToFile));
+    public static ArrayList<Commands> findCommands(String line) throws WrongScript, WrongTicketData{
+        Scanner scanner = new Scanner(line);
         ArrayList<Commands> arrCommands = new ArrayList<>();
         while (scanner.hasNext()){
             String[] commandArr = scanner.nextLine().split(" ");
+            System.out.println(commandArr[0]);
             Commands command = null;
             for(CommandsEnum cmd: CommandsEnum.values()){
                 if (cmd.getName().equals(commandArr[0])){
@@ -97,9 +99,17 @@ public class FindCommand {
             switch (choice) {
                 case 1:
                     ticket.setType(TicketType.VIP);
-                    break; case 2: ticket.setType(TicketType.USUAL);
-                    break; case 3: ticket.setType(TicketType.BUDGETARY);
-                    break; case 4: ticket.setType(TicketType.CHEAP);
+                    break;
+                case 2:
+                    ticket.setType(TicketType.USUAL);
+                    break;
+                case 3:
+                    ticket.setType(TicketType.BUDGETARY);
+                    break;
+                case 4:
+                    ticket.setType(TicketType.CHEAP);
+                    break;
+
             }
             String[] string = new String[3];
             string[0] = scanner.nextLine();
@@ -142,14 +152,9 @@ public class FindCommand {
                 description = " ";
             }
             event.setDescription(description);
-
             return event;
-
         }catch (Exception e){
             throw new WrongTicketData("неправильная информация в скрипте");
         }
-
-
-
     }
 }

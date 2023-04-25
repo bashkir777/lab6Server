@@ -26,7 +26,7 @@ public class RemoveById implements Command {
      */
     @Override
     public String execute(){
-        List<Ticket> tempList = new ArrayList<Ticket>();
+        List<Ticket> tempList = new ArrayList<>();
         boolean DeleteSuccess = false;
         for (Ticket ticket: queueCopy){
             if (ticket.getId() == this.id){
